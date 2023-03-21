@@ -1,80 +1,75 @@
 const api = "http://localhost:5678/api/";
-const token = localStorage.getItem("token");
-let categoryIdValue = "";
+//const token = localStorage.getItem("token");
 // Définir une variable globale pour stocker les données de l'API
-let categories = [];
-let btnTitle = [];
+// Création des objets
+const allWorks = new Set();
+const objWorks = new Set();
+const aptWorks = new Set();
+const hotWorks = new Set();
 const btnSort = document.querySelectorAll(".btn");
-const filterButtons = document.createElement("div");
-const portfolioSection = document.querySelector("#portfolio");
-portfolioSection
-  .querySelector("h2")
-  .insertAdjacentElement("afterend", filterButtons);
-const imageUrls = [];
+const portfolioSection = document.querySelector("#portfolio h2");
+// Appel API + affichage projets
+async function getAllDatabaseInfo(type) {
+  const response = await fetch(api + type);
+  if (response.ok) {
+    return response.json();
+  } else {
+    console.log(response.error);
+  }
+}
+
+function sortWorks(works) {
+  for (const work of works) {
+    allWorks.add(work);
+    switch (work.categoryId) {
+      case 1:
+        objWorks.add(work);
+        break;
+      case 2:
+        aptWorks.add(work);
+        break;
+      case 3:
+        hotWorks.add(work);
+        break;
+      default:
+        break;
+    }
+  }
+}
 //*************************************
-async function fetchApiWorks() {
+// Ininitialisation de chargements des projets
+async function init() {
   try {
-    await fetch(api + "works")
-      .then((r) => r.json())
-      .then((data) => (cards = data));
-    const btnTitle = getButtonTitles(cards);
-
-    console.log(`le titre des BTN filtres  : ${btnTitle.join("  /  ")}`);
-    console.log(cards);
-
-    filtersBtn(btnTitle);
-    workDisplay(cards);
+    const works = await getAllDatabaseInfo("works");
+    sortWorks(works);
+    workDisplay(allWorks);
   } catch (error) {
     console.log(
-      `Erreur chargement Fonction fetchApiWorks Cartes des Projets:  ${error}`
+      `Erreur chargement Fonction initialize Cartes des Projets:  ${error}`
     );
   }
 }
-
-async function fetchApiCategories() {
-  try {
-    await fetch(api + "categories")
-      .then((r) => r.json())
-      .then((data) => (categories = data));
-    console.log(categories);
-  } catch (error) {
-    console.log(
-      `Erreur chargement Fonction fetchApiWorks Cartes des Projets:  ${error}`
-    );
-  }
-}
-
-//*************************************Récupération dynamique de catégories appellé dans le fetch
-
-function getButtonTitles(cards) {
-  return [...new Set(cards.map((card) => card.category.name))];
-}
+init();
 
 //*************************************CRÉATION & INJECTION BOUTON EN HTML
 
 function filtersBtn(btnTitle) {
+  //appel function getAllCategory
+
+  const filterButtons = document.createElement("div");
+  filterButtons.classList.add("filter");
   // Create button "Tous"
   const allButton = document.createElement("button");
   allButton.classList.add("btn", "active");
   allButton.textContent = "Tous";
   filterButtons.appendChild(allButton);
-  filterButtons.classList.add("filter");
 
   // Destructuring test
-
-  const buttons = [
-    allButton,
-    ...btnTitle.map((categoryName) => {
-      const button = document.createElement("button");
-      button.classList.add("btn");
-      button.textContent = categoryName;
-      filterButtons.appendChild(button);
-      return button;
-    }),
-  ];
+  //boucle sur toute category et creation de bouton pour chaque
 
   //LOGIQUE CLIQUE pour récupérer le "name" du Button et la Class qui s'ajoute
-  buttons.forEach((btn) => {
+  btns = filterButtons.querySelectorAll("button");
+  btns.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       categoryIdValue = e.target.textContent;
       console.log(categoryIdValue);
@@ -87,13 +82,13 @@ function filtersBtn(btnTitle) {
   });
 }
 
-//************************************ CREATION CARTES WORKS
+//************************************ CREATION  WORKS
 
 function cardsTemplate(card) {
   const cardDisplay = document.createElement("figure");
   // data set pour étape édition ds Modal
-  cardDisplay.setAttribute("data-card-id", card.id);
-  cardDisplay.setAttribute("value", card.categoryId);
+  cardDisplay.dataset.id = card.id;
+  cardDisplay.dataset.cardId = card.categoryId;
   //console.log(cardDisplay);
   // INJECTION DE MON IMAGE DS MA CARTE
 
@@ -107,27 +102,23 @@ function cardsTemplate(card) {
 
   cardDisplay.appendChild(imgCard);
   cardDisplay.appendChild(titleCard);
-  portfolioSection.appendChild(cardDisplay);
 
   // Retourner cartes pour stockage
   return cardDisplay;
 }
 //*************************************INJECTION DES CARTES DANS LE HTML
 
-function workDisplay() {
+function workDisplay(works) {
   const gallery = document.querySelector(".gallery");
-  const cardDisplay = new Set();
   gallery.innerHTML = "";
-  cards.forEach((card) => {
-    if (categoryIdValue === "Tous" || card.category.name === categoryIdValue) {
-      cardDisplay.add(card);
-    }
+  const fragment = document.createDocumentFragment();
+  works.forEach((work) => {
+    fragment.appendChild(cardsTemplate(work));
   });
-  cardDisplay.forEach((card) => {
-    gallery.appendChild(cardsTemplate(card));
-  });
+  gallery.appendChild(fragment);
 }
 
+/*
 //*************************************LOGIQUE AU CHARGEMENT DE LA PAGE
 window.addEventListener("load", (e) => {
   fetchApiWorks();
@@ -156,4 +147,4 @@ function removeToken() {
 }
 
 //événement fermeture onglet ou redirection vers un autre site
-window.addEventListener("unload", removeToken);
+window.addEventListener("unload", removeToken);*/
