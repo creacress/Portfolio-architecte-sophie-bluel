@@ -6,9 +6,12 @@ const allWorks = new Set();
 const objWorks = new Set();
 const aptWorks = new Set();
 const hotWorks = new Set();
+const allCats = new Set();
 const btnSort = document.querySelectorAll(".btn");
 const portfolioSection = document.querySelector("#portfolio h2");
+
 // Appel API + affichage projets
+
 async function getAllDatabaseInfo(type) {
   const response = await fetch(api + type);
   if (response.ok) {
@@ -43,44 +46,80 @@ async function init() {
     const works = await getAllDatabaseInfo("works");
     sortWorks(works);
     workDisplay(allWorks);
+    displayFilterButton(allCats);
   } catch (error) {
     console.log(
-      `Erreur chargement Fonction initialize Cartes des Projets:  ${error}`
+      `Erreur chargement Fonction init cartes des projets:  ${error}`
     );
   }
 }
+
 init();
 
-//*************************************CRÉATION & INJECTION BOUTON EN HTML
-
-function filtersBtn(btnTitle) {
-  //appel function getAllCategory
-
+async function displayFilterButton() {
+  const categories = await getAllDatabaseInfo("categories");
   const filterButtons = document.createElement("div");
   filterButtons.classList.add("filter");
   // Create button "Tous"
   const allButton = document.createElement("button");
   allButton.classList.add("btn", "active");
   allButton.textContent = "Tous";
-  filterButtons.appendChild(allButton);
+  const fragment = document.createDocumentFragment();
+  fragment.appendChild(allButton);
 
-  // Destructuring test
-  //boucle sur toute category et creation de bouton pour chaque
+  // créer les différent bouton les mettre dans le fragment
 
-  //LOGIQUE CLIQUE pour récupérer le "name" du Button et la Class qui s'ajoute
-  btns = filterButtons.querySelectorAll("button");
-  btns.forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      categoryIdValue = e.target.textContent;
-      console.log(categoryIdValue);
-      buttons.forEach((btn) => {
-        btn.classList.remove("active");
-      });
-      e.target.classList.add("active");
-      workDisplay();
-    });
-  });
+  const objectButton = document.createElement("button");
+  objectButton.textContent = "Objet";
+  fragment.appendChild(objectButton);
+
+  const appartementButton = document.createElement("button");
+  appartementButton.textContent = "Appartement";
+  fragment.appendChild(appartementButton);
+
+  const hotelButton = document.createElement("button");
+  hotelButton.textContent = "Hôtels et restaurants";
+  fragment.appendChild(hotelButton);
+
+  console.log(fragment);
 }
+
+//mettre le fragment dans le html
+function sortCategory(categories) {
+  for (const categorie of categories) {
+    categories.add(categorie);
+    switch (categorie.categoryId) {
+      case 1:
+        objWorks.add(categorie);
+        break;
+      case 2:
+        aptWorks.add(categorie);
+        break;
+      case 3:
+        hotWorks.add(categorie);
+        break;
+      default:
+        break;
+    }
+  }
+}
+//*************************************CRÉATION & INJECTION BOUTON EN HTML
+
+//function filtersBtn(btnTitle) {
+//appel function getAllCategory
+
+//LOGIQUE CLIQUE pour récupérer le "name" du Button et la Class qui s'ajoute
+/*
+btns = filterButtons.querySelectorAll("button");
+btns.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    categoryIdValue = e.target.textContent;
+    console.log(categoryIdValue);
+    document.querySelector(".active").classList.remove("active");
+    e.target.classList.add("active");
+    workDisplay();
+  });
+});*/
 
 //************************************ CREATION  WORKS
 
@@ -97,6 +136,7 @@ function cardsTemplate(card) {
   imgCard.setAttribute("alt", "photo de " + card.title);
 
   // INJECTION DU TITRE DS MA CARTE
+
   const titleCard = document.createElement("figcaption");
   titleCard.textContent = card.title;
 
@@ -112,9 +152,9 @@ function workDisplay(works) {
   const gallery = document.querySelector(".gallery");
   gallery.innerHTML = "";
   const fragment = document.createDocumentFragment();
-  works.forEach((work) => {
+  for (const work of works) {
     fragment.appendChild(cardsTemplate(work));
-  });
+  }
   gallery.appendChild(fragment);
 }
 
