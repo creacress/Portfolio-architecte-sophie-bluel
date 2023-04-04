@@ -1,190 +1,95 @@
-const api = "http://localhost:5678/api/";
-//const token = localStorage.getItem("token");
-// Définir une variable globale pour stocker les données de l'API
-// Création des objets
-const allWorks = new Set();
-const objWorks = new Set();
-const aptWorks = new Set();
-const hotWorks = new Set();
-const allCats = new Set();
-const btnSort = document.querySelectorAll(".btn");
-const portfolioSection = document.querySelector("#portfolio h2");
+//
+const navBouton = document.querySelector(".boutons");
+// Création bouton "Tous"
+const boutonTous = document.createElement("button");
+boutonTous.innerText = "Tous";
+// Création bouton "Objets"
+const boutonObjets = document.createElement("button");
+boutonObjets.innerText = "Objets";
+// Création bouton "Appartements"
+const boutonAppartements = document.createElement("button");
+boutonAppartements.innerText = "Appartements";
+// Création bouton "Hôtels & restaurants"
+const boutonHotel = document.createElement("button");
+boutonHotel.innerText = "Hôtels & restaurants";
+//
+navBouton.appendChild(boutonTous);
+navBouton.appendChild(boutonObjets);
+navBouton.appendChild(boutonAppartements);
+navBouton.appendChild(boutonHotel);
 
-// Appel API + affichage projets
+//Déclare works en tableau variable globale
+let works = [];
+//Déclare le filtre en variable globale
+let filtre = "";
+//Insertion d'une variable dans la fonction
+genererWorks(filtre);
+//Function appel API
+async function genererWorks(filtre) {
+  const reponse = await fetch("http://localhost:5678/api/works/");
+  works = await reponse.json();
 
-async function getAllDatabaseInfo(type) {
-  const response = await fetch(api + type);
-  if (response.ok) {
-    return response.json();
-  } else {
-    console.log(response.error);
+  let objectButton = []; //Initialisation
+  switch (
+    filtre //switch permet de faire une action différente en fonction de la valeur de "filtre"
+  ) {
+    case "Tous":
+      objectButton = works.filter((works) => works.categoryId);
+      break;
+    case "objets": //Si "filtre" = "objets"
+      objectButton = works.filter((works) => works.categoryId == 1);
+      break;
+    case "Appartements":
+      objectButton = works.filter((works) => works.categoryId == 2);
+      break;
+    case "Hôtels & restaurants":
+      objectButton = works.filter((works) => works.categoryId == 3);
+      break;
+    default:
+      objectButton = works; //Dans le cas default (donc dans tout autre cas que ceux mentionnés au dessus), je recupère works qui appelait toutes les cartes
+  }
+
+  for (let i = 0; i < objectButton.length; i++) {
+    const figure = objectButton[i];
+    // Récupération de l'élément du DOM qui accueillera les fiches
+    const divGallery = document.querySelector(".gallery");
+    // Création d’une balise dédiée à aux figures
+    const worksElement = document.createElement("figure");
+    // Création des balises
+    const imageElement = document.createElement("img");
+    imageElement.src = figure.imageUrl;
+
+    const nomElement = document.createElement("p");
+    nomElement.innerText = figure.title;
+
+    // On rattache la balise figure a la div Gallery
+    divGallery.appendChild(worksElement);
+    worksElement.appendChild(imageElement);
+    worksElement.appendChild(nomElement);
   }
 }
 
-function sortWorks(works) {
-  for (const work of works) {
-    allWorks.add(work);
-    switch (work.categoryId) {
-      case 1:
-        objWorks.add(work);
-        break;
-      case 2:
-        aptWorks.add(work);
-        break;
-      case 3:
-        hotWorks.add(work);
-        break;
-      default:
-        break;
-    }
-  }
-}
-//*************************************
-// Ininitialisation de chargements des projets
-async function init() {
-  try {
-    const works = await getAllDatabaseInfo("works");
-    sortWorks(works);
-    workDisplay(allWorks);
-    displayFilterButton(allCats);
-  } catch (error) {
-    console.log(
-      `Erreur chargement Fonction init cartes des projets:  ${error}`
-    );
-  }
-}
+const boutonObjet = document.querySelector("button");
 
-init();
-
-async function displayFilterButton() {
-  const categories = await getAllDatabaseInfo("categories");
-  const filterButtons = document.createElement("div");
-  filterButtons.classList.add("filter");
-  // Create button "Tous"
-  const allButton = document.createElement("button");
-  allButton.classList.add("btn", "active");
-  allButton.textContent = "Tous";
-  const fragment = document.createDocumentFragment();
-  fragment.appendChild(allButton);
-
-  // créer les différent bouton les mettre dans le fragment
-
-  const objectButton = document.createElement("button");
-  objectButton.textContent = "Objet";
-  fragment.appendChild(objectButton);
-
-  const appartementButton = document.createElement("button");
-  appartementButton.textContent = "Appartement";
-  fragment.appendChild(appartementButton);
-
-  const hotelButton = document.createElement("button");
-  hotelButton.textContent = "Hôtels et restaurants";
-  fragment.appendChild(hotelButton);
-
-  console.log(fragment);
-}
-
-//mettre le fragment dans le html
-function sortCategory(categories) {
-  for (const categorie of categories) {
-    categories.add(categorie);
-    switch (categorie.categoryId) {
-      case 1:
-        objWorks.add(categorie);
-        break;
-      case 2:
-        aptWorks.add(categorie);
-        break;
-      case 3:
-        hotWorks.add(categorie);
-        break;
-      default:
-        break;
-    }
-  }
-}
-//*************************************CRÉATION & INJECTION BOUTON EN HTML
-
-//function filtersBtn(btnTitle) {
-//appel function getAllCategory
-
-//LOGIQUE CLIQUE pour récupérer le "name" du Button et la Class qui s'ajoute
-/*
-btns = filterButtons.querySelectorAll("button");
-btns.forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    categoryIdValue = e.target.textContent;
-    console.log(categoryIdValue);
-    document.querySelector(".active").classList.remove("active");
-    e.target.classList.add("active");
-    workDisplay();
-  });
-});*/
-
-//************************************ CREATION  WORKS
-
-function cardsTemplate(card) {
-  const cardDisplay = document.createElement("figure");
-  // data set pour étape édition ds Modal
-  cardDisplay.dataset.id = card.id;
-  cardDisplay.dataset.cardId = card.categoryId;
-  //console.log(cardDisplay);
-  // INJECTION DE MON IMAGE DS MA CARTE
-
-  const imgCard = document.createElement("img");
-  imgCard.setAttribute("src", card.imageUrl);
-  imgCard.setAttribute("alt", "photo de " + card.title);
-
-  // INJECTION DU TITRE DS MA CARTE
-
-  const titleCard = document.createElement("figcaption");
-  titleCard.textContent = card.title;
-
-  cardDisplay.appendChild(imgCard);
-  cardDisplay.appendChild(titleCard);
-
-  // Retourner cartes pour stockage
-  return cardDisplay;
-}
-//*************************************INJECTION DES CARTES DANS LE HTML
-
-function workDisplay(works) {
-  const gallery = document.querySelector(".gallery");
-  gallery.innerHTML = "";
-  const fragment = document.createDocumentFragment();
-  for (const work of works) {
-    fragment.appendChild(cardsTemplate(work));
-  }
-  gallery.appendChild(fragment);
-}
-
-/*
-//*************************************LOGIQUE AU CHARGEMENT DE LA PAGE
-window.addEventListener("load", (e) => {
-  fetchApiWorks();
-  fetchApiCategories();
-  categoryIdValue = "Tous";
-  checkToken();
+boutonTous.addEventListener("click", function () {
+  document.querySelector(".gallery").innerHTML = "";
+  filtre = "Tous";
+  genererWorks(filtre);
+});
+boutonObjets.addEventListener("click", function () {
+  document.querySelector(".gallery").innerHTML = "";
+  filtre = "objets";
+  genererWorks(filtre);
 });
 
-//*************************************
-function checkToken() {
-  // Vérifie si le token est dans le localStorage
-  const token = localStorage.getItem("token");
-  if (token) {
-    console.log("Token en mémoire! ");
-    adminEdition();
-  } else {
-    console.log("No have token in memory !");
-  }
-}
+boutonAppartements.addEventListener("click", function () {
+  document.querySelector(".gallery").innerHTML = "";
+  filtre = "Appartements";
+  genererWorks(filtre);
+});
 
-//LOG OUT
-function removeToken() {
-  // Supprime le token du localStorage
-  localStorage.removeItem("token");
-  sessionStorage.removeItem("deletedImages");
-}
-
-//événement fermeture onglet ou redirection vers un autre site
-window.addEventListener("unload", removeToken);*/
+boutonHotel.addEventListener("click", function () {
+  document.querySelector(".gallery").innerHTML = "";
+  filtre = "Hôtels & restaurants";
+  genererWorks(filtre);
+});
