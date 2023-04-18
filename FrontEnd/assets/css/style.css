@@ -109,6 +109,9 @@ section {
 body {
   line-height: 1;
 }
+a {
+  text-decoration: none;
+}
 ol,
 ul {
   list-style: none;
@@ -186,30 +189,225 @@ a:hover {
 }
 #introduction figure {
   flex: 1;
+  position: relative;
 }
 #introduction img {
   display: block;
   margin: auto;
   width: 80%;
 }
-
 #introduction article {
   flex: 1;
+  position: relative;
 }
 #introduction h2 {
   margin-bottom: 1em;
 }
-
 #introduction p {
   margin-bottom: 0.5em;
 }
-#portfolio h2 {
-  text-align: center;
-  margin-bottom: 1em;
+/************************
+
+
+/* CSS Modale*/
+.edition {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 1440px;
+  margin-left: -150px;
+  background: black;
 }
-.gallery {
-  width: 100%;
+.edition i {
+  color: white;
+}
+.mode {
+  color: white;
+  background: black;
+  border: none;
+}
+.publier {
+  color: black;
+  background-color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 60px;
+  margin-left: 20px;
+}
+.modifier {
+  display: none;
+  margin: 10px;
+}
+.modalContainer {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+#modal1,
+#modal2 {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 630px;
+  height: 730px;
+  background: white;
+  border-radius: 10px;
+}
+#modal h2,
+#modal2 H2 {
+  font-family: "Work Sans";
+  font-size: 26px;
+  font-weight: 400;
+  text-align: center;
+  color: black;
+  margin-top: 60px;
+  margin-bottom: 46px;
+}
+.worksContainer {
+  width: 420px;
   display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-column-gap: 7px;
+  grid-row-gap: 10px;
+  overflow-y: auto;
+}
+.worksContainer img {
+  width: 100%;
+  height: 105px;
+  object-fit: cover;
+}
+.worksContainer figure {
+  position: relative;
+}
+.editer {
+  font-family: "Work Sans";
+  font-size: 12px;
+  border: none;
+  background: white;
+  padding: 0;
+}
+.delete {
+  position: absolute;
+  top: 6px;
+  right: 4px;
+  color: white;
+  background: black;
+  padding: 4px;
+  border: none;
+  font-size: 9px;
+  border-radius: 2px;
+}
+.separator {
+  width: 420px;
+  height: 1px;
+  background: #b3b3b3;
+  margin: 47px auto 0 auto;
+}
+.close {
+  position: absolute;
+  top: 32px;
+  right: 36px;
+  background: white;
+  border: none;
+}
+.close i,
+.back i {
+  font-weight: 600;
+}
+.back {
+  position: absolute;
+  top: 32px;
+  left: 36px;
+  background: white;
+  border: none;
+}
+.addWork {
+  font-family: "Syne";
+  color: white;
+  background: #1d6154;
+  border-radius: 60px;
+  border: none;
+  padding: 10px 50px;
+  margin: 38px 0 23px 0;
+  width: 240px;
+}
+.valid {
+  font-family: "Syne";
+  color: white;
+  background: #a7a7a7;
+  border-radius: 60px;
+  border: none;
+  padding: 10px 50px;
+  margin: 38px auto 23px auto;
+  width: 240px;
+}
+#modal p {
+  font-family: "Work Sans";
+  font-weight: 400;
+  color: #d65353;
+}
+#titre,
+#categorie {
+  width: 420px;
+  height: 50px;
+  border: none;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.1);
+}
+#sendImg {
+  display: flex;
+  flex-direction: column;
+}
+#sendImg label {
+  margin: 21px 0 10px 0;
+}
+.addImg {
+  margin: 0 auto;
+  width: 420px;
+  height: 170px;
+  background: #e8f1f6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-bottom: 9px;
+}
+.addImg i {
+  font-size: 46px;
+  color: #b9c5cc;
+  padding-top: 28px;
+}
+.addImg input {
+  display: none;
+}
+.addImg label {
+  color: #306685;
+  background: #cbd6dc;
+  padding: 10px 33px;
+  border-radius: 50px;
+}
+.addImg p {
+  padding-bottom: 19px;
+}
+.envoyer {
+  background: #1d6154;
+}
+#preview {
+  position: absolute;
+  height: 170px;
+}
+
+.gallery {
+  display: grid;
+  width: 100%;
   grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
@@ -218,9 +416,62 @@ a:hover {
 .gallery img {
   width: 100%;
 }
+
+/* Ajout des filtres */
+
+.filtres {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 3rem;
+}
+.filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /**/
+  color: #1d6154;
+  border: solid #1d6154 1px;
+  grid-gap: 10px;
+  border-radius: 60px;
+  /**/
+  font-family: "Syne";
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  margin: 10px;
+  padding: 10px;
+  height: auto;
+  cursor: pointer;
+}
+
+.filter:active {
+  background: #1d6154;
+  color: #ffffff;
+}
+/*
+.filtrer button {
+  border: none;
+  font-family: "Work Sans";
+  cursor: pointer;
+  background-color: inherit;
+  position: absolute;
+  top: 10px;
+  left: 65%;
+  transform: translateX(-40%);
+}
+
+.btnProjets i {
+  position: absolute;
+  top: 10px;
+  left: 62%;
+  transform: translateX(-50%);
+}
+/**************************************/
 #contact {
-  width: 50%;
   margin: auto;
+  width: 50%;
 }
 #contact > * {
   text-align: center;
@@ -229,10 +480,10 @@ a:hover {
   margin-bottom: 20px;
 }
 #contact form {
-  text-align: left;
-  margin-top: 30px;
   display: flex;
   flex-direction: column;
+  text-align: left;
+  margin-top: 30px;
 }
 
 #contact input {
@@ -249,15 +500,15 @@ a:hover {
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"] {
+button[type="submit"] {
+  text-align: center;
   font-family: "Syne";
-  font-weight: 700;
   color: white;
   background-color: #1d6154;
-  margin: 2em auto;
-  width: 180px;
-  text-align: center;
   border-radius: 60px;
+  font-weight: 700;
+  margin: 2em;
+  height: 3rem;
   cursor: pointer;
 }
 #forget {

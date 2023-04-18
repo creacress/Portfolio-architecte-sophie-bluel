@@ -2,7 +2,7 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Sophie Bluel - Architecte d'intérieur</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -10,41 +10,49 @@
       href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/assets/css/style.css" />
-
-    <title>Login</title>
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="./assets/css/log.css" />
   </head>
   <body>
     <header>
-      <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+      <h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
       <nav>
         <ul>
-          <li><a href="#portfolio">projets</a></li>
-          <li><a href="#contact">contact</a></li>
-          <li><a href="/login.html">login </a></li>
-          <li><img src="/assets/icons/instagram.png" alt="Instagram" /></li>
+          <li id="projets"><a href="./index.html#portfolio">projets </a></li>
+          <li><a href="./index.html#contact">contact </a></li>
+          <li id="login"><a href="./login.html">login </a></li>
+          <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
         </ul>
       </nav>
     </header>
-    <!---->
-    <section id="contact">
-      <h2>Login</h2>
-      <form action="#" method="post">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" />
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" />
-        <input type="submit" value="Envoyer" />
-        <label for="text" id="forget"><a> Mot de passe oublié </a></label>
-      </form>
-    </section>
-    <footer class="footer_login">
+    <main>
+      <section class="login">
+        <h2>Log In</h2>
+        <p class="erreurLogin">Erreur dans l’identifiant ou le mot de passe</p>
+
+        <form class="form">
+          <label for="email">E-mail</label>
+          <input name="email" type="email" id="email" />
+          <p class="valideEmail">Cette email n'est pas valide</p>
+
+          <label for="password">Mot de passe</label>
+          <input name="password" type="password" id="password" />
+          <div>
+            <input type="submit" value="Se connecter" />
+            <a href=""><p>Mot de passe oublié</p></a>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer>
       <nav>
         <ul>
           <li>Mentions Légales</li>
         </ul>
       </nav>
     </footer>
-    <script src="./log.js"></script>
   </body>
+  <script src="./assets/js/log.js"></script>
 </html>
