@@ -5,6 +5,8 @@ const arrWorks = new Set();
 
 const token = sessionStorage.accessToken;
 const worksContainer = document.querySelector(`.worksContainer`);
+const modalContainer = document.querySelector(".modalContainer");
+const pushModal = document.querySelector(".publier");
 
 // fonction qui récupére les info de la bdd
 async function getAllDatabaseInfo(type) {
@@ -22,16 +24,17 @@ async function getAllDatabaseInfo(type) {
 // Function flex pour la modale
 function modalFlex() {
   const edition = document.querySelector(`.edition`);
-  const modalContainer = document.querySelector(".modalContainer");
   const modal1 = document.querySelector(".modal1");
   const modal2 = document.querySelector(".modal2");
   const modifier = document.querySelectorAll(".modifier");
 
   edition.style = `display : flex`;
   login.innerText = `logout`;
+  modal1.classList.toggle("tokenModal");
   modalContainer.style = `display : flex`;
-  modal1.style.display = `display : flex`;
+
   // J 'AI BESOIN DE SAVOIR PK IL FAIS LE TETU !
+  // modifier.classList.toggle("tokenModifier");
   //modifier.style.display = `display : flex`;
   //modal2.style.display = `display : flex`;
 }
@@ -59,26 +62,6 @@ function showWorksInModal() {
   });
 }
 
-// --- Requète DELETE pour supprimer un projet ---
-async function delWork(workId) {
-  const response = await fetch("http://localhost:5678/api/works/1", {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  const result = await response.json();
-  console.log(result);
-}
-// --- Confirmation pour suppression ---
-function confirmDelWork(workId) {
-  if (confirm("Êtes-vous sûr de vouloir supprimer ce projet ?")) {
-    delWork(workId);
-    worksContainer.innerHTML = "";
-    showWorksInModal();
-    showWorksByCategory(0);
-  }
-}
 // Ininitialisation de chargements des projets
 async function init() {
   try {
@@ -102,10 +85,10 @@ async function init() {
 
       showWorksInModal();
 
-      // modifier.forEach(() => {
-      //   a.style.display = "flex";
-      // });
-      // a.style = `display: none`;
+      // ** Permet de se déloguer ** //
+
+      setLogoutButton();
+      displayFilterButton();
     } else {
       displayFilterButton();
     }
@@ -116,17 +99,6 @@ async function init() {
   }
 }
 init();
-
-// Permet de se déloguer =>
-function setLogoutButton() {
-  const logout = document.getElementById(`login`);
-  logout.textContent = "logout";
-  logout.addEventListener("click", (e) => {
-    e.preventDefault();
-    sessionStorage.clear();
-    window.location.reload();
-  });
-}
 
 function genererWorks(filtre = 0) {
   let filtredWorks = allWorks;
@@ -188,5 +160,59 @@ function setFilterEvent() {
       document.querySelector(".active").classList.remove("active");
       clickedButton.classList.add("active");
     });
+  }
+}
+//**************************************************************** */
+// Permet d'appuyer et d'afficher la modale
+pushModal.addEventListener("click", () => {
+  console.log("Bonjour");
+  modalContainer.style = `display : flex`;
+  modal1.classList.toggle("tokenModal");
+});
+
+// Function pour délogue =>
+function setLogoutButton() {
+  const logout = document.getElementById(`login`);
+  logout.textContent = "logout";
+  logout.addEventListener("click", (e) => {
+    e.preventDefault();
+    sessionStorage.clear();
+    window.location.reload();
+  });
+  // --- Suppression du token si logout ---
+  login.addEventListener("click", function () {
+    if (token) {
+      location.href = "http://" + location.hostname + ":5500/index.html";
+      sessionStorage.removeItem("accessToken");
+      location.reload();
+    }
+  });
+}
+
+// --- Fermeture de la modale ---
+window.addEventListener("click", function (e) {
+  if (e.target === modalContainer) {
+    modalContainer.style.display = "none";
+    modal2.style.display = `none`;
+  }
+});
+
+// --- Requète DELETE pour supprimer un projet ---
+async function delWork(workId) {
+  const response = await fetch("http://localhost:5678/api/works/1", {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const result = await response.json();
+  console.log(result);
+}
+// --- Confirmation pour suppression ---
+function confirmDelWork(workId) {
+  if (confirm("Êtes-vous sûr de vouloir supprimer ce projet ?")) {
+    delWork(workId);
+    worksContainer.innerHTML = "";
+    showWorksInModal();
   }
 }

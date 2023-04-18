@@ -29,23 +29,6 @@ if (token) {
   btns.style = `display: none`;
 }
 
-// --- Affichage de la modale ---
-/*function showModal() {
-  displayModal.addEventListener("click", function (e) {
-    modalContainer.style.display = "flex";
-    modal.style.display = `flex`;
-  });
-}
-showModal();*/
-
-// --- Fermeture de la modale ---
-document.addEventListener("click", function (e) {
-  if (e.target === modalContainer) {
-    modalContainer.style.display = "none";
-    modal2.style.display = `none`;
-  }
-});
-
 function closeModal() {
   modalContainer.style.display = "none";
   modal2.style.display = "none";
@@ -53,52 +36,6 @@ function closeModal() {
 close.forEach(function (button) {
   button.addEventListener("click", closeModal);
 });
-
-// --- Affichage de la galerie dans la modale ---
-async function showWorksInModal() {
-  arrWorks = await getWorks();
-
-  arrWorks.forEach((work) => {
-    const figureModal = document.createElement(`figure`);
-    const figureImgModal = document.createElement(`img`);
-    const editButton = document.createElement(`button`);
-    const delButton = document.createElement(`button`);
-    figureImgModal.src = work.imageUrl;
-    figureImgModal.alt = work.title;
-    editButton.innerText = `éditer`;
-    editButton.classList.add(`editer`);
-    delButton.innerHTML = `<i class="fa-regular fa-trash-can"></i>`;
-    delButton.classList.add(`delete`);
-    delButton.addEventListener("click", function () {
-      confirmDelWork(work.id);
-    });
-    worksContainer.appendChild(figureModal);
-    figureModal.append(figureImgModal, editButton, delButton);
-  });
-}
-showWorksInModal();
-
-// --- Requète DELETE pour supprimer un projet ---
-async function delWork(workId) {
-  const response = await fetch("http://localhost:5678/api/works/1", {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  const result = await response.json();
-  console.log(result);
-}
-
-// --- Confirmation pour suppression ---
-function confirmDelWork(workId) {
-  if (confirm("Êtes-vous sûr de vouloir supprimer ce projet ?")) {
-    delWork(workId);
-    worksContainer.innerHTML = "";
-    showWorksInModal();
-    showWorksByCategory(0);
-  }
-}
 
 // --- "Redirection" vers ajout d'un projet ---
 addWork.addEventListener(`click`, function () {

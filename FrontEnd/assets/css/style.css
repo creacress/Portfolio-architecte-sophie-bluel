@@ -234,9 +234,14 @@ a:hover {
   padding: 10px 22px;
   border-radius: 60px;
   margin-left: 20px;
+  cursor: pointer;
 }
 .modifier {
   display: none;
+  margin: 10px;
+}
+.tokenModifier {
+  display: flex;
   margin: 10px;
 }
 .modalContainer {
@@ -262,6 +267,25 @@ a:hover {
   background: white;
   border-radius: 10px;
 }
+/* Inject by JS*/
+.tokenModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 630px;
+  height: 730px;
+  background: white;
+  border-radius: 10px;
+}
+/************************/
+.flex-galery {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: inherit;
+}
+
 #modal h2,
 #modal2 H2 {
   font-family: "Work Sans";
@@ -339,6 +363,8 @@ a:hover {
   padding: 10px 50px;
   margin: 38px 0 23px 0;
   width: 240px;
+  text-align: center;
+  margin-left: 2rem;
 }
 .valid {
   font-family: "Syne";
@@ -350,10 +376,11 @@ a:hover {
   margin: 38px auto 23px auto;
   width: 240px;
 }
-#modal p {
+.modal1 p {
   font-family: "Work Sans";
   font-weight: 400;
   color: #d65353;
+  text-align: center;
 }
 #titre,
 #categorie {
