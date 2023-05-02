@@ -272,7 +272,7 @@ if (modal2) {
     modal1.style.display = `flex`;
     modal2.style.display = `none`;
   });
-  closeModal.addEventListener(`click`, () => {
+  closeModal.addEventListener("click", () => {
     modal1.style.display = `none`;
     modal2.style.display = `none`;
     modalContainer.style = `display : none`;
@@ -423,11 +423,14 @@ async function delWork(id) {
   const response = await fetch("http://localhost:5678/api/works/" + id, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${token}`, // Ajoute l'en-tête d'autorisation avec le jeton d'accès
+      // Ajoute l'en-tête d'autorisation avec le jeton d'accès
+      Authorization: `Bearer ${token}`,
     },
   });
-  console.log(response); // Affiche la réponse dans la console
-  return response.status; // Renvoie le code d'état de la réponse
+  // Affiche la réponse dans la console
+  console.log(response);
+  // Renvoie le code d'état de la réponse
+  return response.status;
 }
 
 // Cette fonction ajoute un travail en envoyant une requête POST à l'API
@@ -436,9 +439,11 @@ async function AddWork(formData) {
   const response = await fetch("http://localhost:5678/api/works", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`, // Ajoute l'en-tête d'autorisation avec le jeton d'accès
+      // Ajoute l'en-tête d'autorisation avec le jeton d'accès
+      Authorization: `Bearer ${token}`,
     },
-    body: formData, // Ajoute les données du formulaire à la requête
+    // Ajoute les données du formulaire à la requête
+    body: formData,
   });
   // Si la réponse est OK, renvoie les données JSON de la réponse
   if (response.ok) {
