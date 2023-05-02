@@ -19,7 +19,7 @@
   </head>
   <body>
     <div class="edition">
-      <i class="fa-regular fa-pen-to-square"></i>&ensp;
+      <i class="fa-regular fa-pen-to-square"></i>;
       <a class="mode">Mode édition</a>
       <a class="publier">publier les changements</a>
     </div>
@@ -46,12 +46,12 @@
       <section id="introduction">
         <figure>
           <img src="./assets/images/sophie-bluel.png" alt="sophie-bluel" />
-          <a class="modifier">
+          <a class="editBtn editBtn0">
             <i class="fa-regular fa-pen-to-square"></i>modifier
           </a>
         </figure>
         <article>
-          <a class="modifier">
+          <a class="editBtn editBtn1">
             <i class="fa-regular fa-pen-to-square"></i>modifier
           </a>
           <h2>Designer d'espace</h2>
@@ -73,10 +73,12 @@
         </article>
       </section>
       <section id="portfolio">
-        <h2>Mes Projets</h2>
-        <a class="modifier">
-          <i class="fa-regular fa-pen-to-square"></i>modifier
-        </a>
+        <div class="editBtnFlex">
+          <h2>Mes Projets</h2>
+          <a class="editBtn editBtn2">
+            <i class="fa-regular fa-pen-to-square"></i>modifier
+          </a>
+        </div>
         <div class="modalContainer">
           <div class="modal1">
             <div class="flex-galery">
@@ -91,7 +93,7 @@
             </div>
           </div>
 
-          <!-- <div class="modal2" onclick="showModal(2)">
+          <div class="modal2">
             <button class="back">
               <i class="fa-regular fa-arrow-left-long"></i>
             </button>
@@ -103,11 +105,7 @@
               <div class="addImg">
                 <i class="fa-regular fa-image"></i>
                 <label for="uploadImg">+ Ajouter photo</label>
-                <input
-                  type="file"
-                  id="uploadImg"
-                  onchange="previewImage(event)"
-                />
+                <input type="file" id="uploadImg" />
                 <img id="preview" />
                 <p>jpg, png : 4mo max</p>
               </div>
@@ -116,9 +114,10 @@
               <label for="categorie">Catégorie</label>
               <select name="categorie" id="categorie"></select>
               <div class="separator"></div>
-              <button type="submit" class="valid">Valider</button>
+              <a type="submit" class="valid">Valider</a>
             </form>
-          </div> -->
+          </div>
+          -->
         </div>
         <div class="filtres">
           <nav class="btns"></nav>
@@ -148,6 +147,5 @@
       </nav>
     </footer>
     <script src="./assets/js/app.js"></script>
-    <!--<script src="./assets/js/modal.js"></script>-->
   </body>
 </html>
