@@ -1,6 +1,7 @@
 //Déclare works et catégorie en tableau Set
 const allWorks = new Set();
 const allCategories = new Set();
+// Permet de stocker
 let file = "";
 
 const token = sessionStorage.accessToken;
@@ -266,19 +267,17 @@ if (modal2) {
   RedirectionModale();
   // --- Flèche retour ---//
   const back = document.querySelector(`.back`);
-  const closeModal = document.querySelector(".close");
+  const closeModal = document.querySelector(`.close`);
   // Flèche permetant de sortir de la modale //
+  closeModal.addEventListener("click", () => {
+    modal2.style.display = `none`;
+    modal1.style.display = `none`;
+    modalContainer.style = `display : none`;
+  });
   back.addEventListener("click", () => {
     modal1.style.display = `flex`;
     modal2.style.display = `none`;
   });
-  closeModal.addEventListener("click", () => {
-    modal1.style.display = `none`;
-    modal2.style.display = `none`;
-    modalContainer.style = `display : none`;
-  });
-  // --- Prévisualisation de l'image ---//
-} else {
 }
 
 // --- Récupération dynamique des catégories pour ajout de projet ---
@@ -305,11 +304,13 @@ function getSelectCategory() {
 function initAddModale() {
   // Récupère l'élément HTML avec l'ID 'uploadImg'
   const img = document.querySelector("#uploadImg");
+  const closeImg = document.querySelector("#closeImg i");
+  const labelUpload = document.querySelector("#sendImg label");
 
   // Ajoute un écouteur d'événements 'change' sur l'élément img
   img.addEventListener("change", (e) => {
     // Récupère le fichier sélectionné
-    const tempFile = e.target.files[0];
+    let tempFile = e.target.files[0];
 
     // Définit les types de fichiers autorisés
     const fileTypes = ["image/jpg", "image/png"];
@@ -337,13 +338,26 @@ function initAddModale() {
 
         // Définit le fichier sélectionné comme variable globale
         file = tempFile;
+
+        submitButton.style = `background : #1D6154`;
+        // Fait apparaitre la croix pour supprimer l'image
+        closeImg.style = `display : flex`;
+        // Permet de faire disparaitre le label depassant
+        labelUpload.style = `display : none`;
+        // Reset le formulaire
+        closeImg.addEventListener("click", () => {
+          upTitle.value = "";
+          uploadImg.files[0] = "";
+          preview.src = "";
+          file = "";
+        });
       } else {
         // Si la taille du fichier est supérieure à 4Mo, affiche une alerte
         return alert("taille incorrect 4mo max");
       }
     } else {
       // Si le type de fichier n'est pas autorisé, affiche une alerte
-      return alert("ce format ets incorrect PNJ/JPG attendu");
+      return alert("ce format est incorrect PNJ/JPG attendu");
     }
   });
 

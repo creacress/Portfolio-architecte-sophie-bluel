@@ -362,6 +362,11 @@ a:hover {
   font-size: 9px;
   border-radius: 2px;
 }
+.delete:hover {
+  transform: scale(1.1);
+
+  cursor: pointer;
+}
 .separator {
   width: 420px;
   height: 1px;
@@ -380,6 +385,20 @@ a:hover {
 .back i {
   font-weight: 600;
 }
+#closeImg i {
+  display: none;
+  font-size: 25px;
+  font-weight: 600;
+  padding: 0;
+  position: absolute;
+  right: 7rem;
+  color: black;
+}
+#closeImg i:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
 .back {
   position: absolute;
   top: 32px;
@@ -399,11 +418,14 @@ a:hover {
   width: 240px;
   text-align: center;
   margin-left: 2rem;
-  cursor: pointer;
 }
 .addWork:active {
   color: white;
   background: #a7a7a7;
+}
+.addWork:hover {
+  transform: scale(1.1);
+  cursor: pointer;
 }
 .valid {
   font-family: "Syne";
