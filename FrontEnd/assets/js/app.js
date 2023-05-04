@@ -17,7 +17,7 @@ const submitButton = document.querySelector(".valid");
 
 // fonction qui récupére les info de la bdd
 async function getAllDatabaseInfo(type) {
-  //on enregistre dans une variable la réponse de la bdd que l'on a attendu
+  //on enregistre dans une letiable la réponse de la bdd que l'on a attendu
   const response = await fetch("http://localhost:5678/api/" + type);
   // si il n'ya aucune erreur, on renvoie le contenu de la réponse
   if (response.ok) {
@@ -103,13 +103,6 @@ function showWorksInModal() {
     figureModal.append(figureImgModal, editButton, delButton);
   });
 }
-// ** Confirmation pour suppression ** //
-async function confirmDelWork(workId) {
-  if (confirm("Êtes-vous sûr de vouloir supprimer ce projet ?")) {
-    const deleteStatus = await delWork(workId);
-    return deleteStatus;
-  }
-}
 
 // ** Ininitialisation de chargements des projets ** /
 async function init() {
@@ -150,7 +143,7 @@ init();
 
 // ** Permet d'afficher les Works de la Bdd ** //
 function genererWorks(filtre = 0) {
-  // On initialise une variable "filtredWorks" avec tous les travaux
+  // On initialise une letiable "filtredWorks" avec tous les travaux
   let filtredWorks = allWorks;
   // Si un filtre est sélectionné, on filtre les travaux en fonction de la catégorie sélectionnée
   if (filtre != 0) {
@@ -165,7 +158,7 @@ function genererWorks(filtre = 0) {
 
   // On boucle sur tous les travaux filtrés
   for (const filtredWork of filtredWorks) {
-    // On crée une variable "work" pour stocker le travail actuel
+    // On crée une letiable "work" pour stocker le travail actuel
     const work = filtredWork;
     // On crée une balise "figure" pour chaque travail
     const worksElement = document.createElement("figure");
@@ -258,26 +251,28 @@ function RedirectionModale() {
     modal1.style.display = `none`;
     modal2.style.display = "flex";
   });
-}
+  const closeModal = document.querySelector(`.closeImg`);
 
-// -- Test modal 2 ----
-
-if (modal2) {
-  // PAssage de la modale 1 à 2 //
-  RedirectionModale();
-  // --- Flèche retour ---//
-  const back = document.querySelector(`.back`);
-  const closeModal = document.querySelector(`.close`);
-  // Flèche permetant de sortir de la modale //
   closeModal.addEventListener("click", () => {
     modal2.style.display = `none`;
     modal1.style.display = `none`;
     modalContainer.style = `display : none`;
   });
+}
+
+// -- Test modal 2 ----
+function closeEvent() {}
+if (modal2) {
+  // PAssage de la modale 1 à 2 //
+  RedirectionModale();
+  // --- Flèche retour ---//
+  const back = document.querySelector(`.back`);
+  // Flèche permetant de sortir de la modale //
   back.addEventListener("click", () => {
     modal1.style.display = `flex`;
     modal2.style.display = `none`;
   });
+  closeEvent();
 }
 
 // --- Récupération dynamique des catégories pour ajout de projet ---
@@ -336,7 +331,7 @@ function initAddModale() {
         // Définit l'URL de l'image sélectionnée comme source de l'élément 'preview'
         preview.src = imageUrl;
 
-        // Définit le fichier sélectionné comme variable globale
+        // Définit le fichier sélectionné comme letiable globale
         file = tempFile;
 
         submitButton.style = `background : #1D6154`;
@@ -346,6 +341,7 @@ function initAddModale() {
         labelUpload.style = `display : none`;
         // Reset le formulaire
         closeImg.addEventListener("click", () => {
+          labelUpload.style = `display : flex`;
           upTitle.value = "";
           uploadImg.files[0] = "";
           preview.src = "";
@@ -374,6 +370,7 @@ function initAddModale() {
     if (file != "" && upTitle != "") {
       modal2.style.display = `none`;
       modal1.style.display = `flex`;
+      alert("Votre projet à bien été rajouté ");
       // Ajout du nouveau travail à la liste de travaux
       const newWork = await AddWork(formData);
       allWorks.add(newWork);
@@ -464,5 +461,11 @@ async function AddWork(formData) {
     return response.json();
   }
 }
-
+// ** Confirmation pour suppression ** //
+async function confirmDelWork(workId) {
+  if (confirm("Êtes-vous sûr de vouloir supprimer ce projet ?")) {
+    const deleteStatus = await delWork(workId);
+    return deleteStatus;
+  }
+}
 //

@@ -174,7 +174,7 @@ nav ul {
   list-style-type: none;
 }
 nav a {
-  padding: 0 10px;
+  padding: 0 25px 0 25px;
   font-size: 1.2em;
   text-decoration: none;
   color: black;
@@ -309,7 +309,6 @@ a:hover {
   background: white;
   border-radius: 10px;
 }
-/* Inject by JS*/
 
 /************************/
 .flex-galery {
@@ -373,6 +372,7 @@ a:hover {
   background: #b3b3b3;
   margin: 47px auto 0 auto;
 }
+.closeImg,
 .close {
   position: absolute;
   top: 32px;
@@ -381,7 +381,9 @@ a:hover {
   border: none;
   cursor: pointer;
 }
-.close i,
+
+.closeImg i,
+.close,
 .back i {
   font-weight: 600;
 }
