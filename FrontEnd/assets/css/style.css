@@ -372,8 +372,8 @@ a:hover {
   background: #b3b3b3;
   margin: 47px auto 0 auto;
 }
-.closeImg,
-.close {
+.closeModal2,
+.closeModal1 {
   position: absolute;
   top: 32px;
   right: 36px;
@@ -382,8 +382,8 @@ a:hover {
   cursor: pointer;
 }
 
-.closeImg i,
-.close,
+.closeModal2 i,
+.closeModal1 i,
 .back i {
   font-weight: 600;
 }

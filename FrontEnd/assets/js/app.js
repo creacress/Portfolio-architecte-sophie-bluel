@@ -251,9 +251,17 @@ function RedirectionModale() {
     modal1.style.display = `none`;
     modal2.style.display = "flex";
   });
-  const closeModal = document.querySelector(`.closeImg`);
 
-  closeModal.addEventListener("click", () => {
+  const closeModal1 = document.querySelector(`.closeModal1`);
+
+  closeModal1.addEventListener("click", () => {
+    modal2.style.display = `none`;
+    modal1.style.display = `none`;
+    modalContainer.style = `display : none`;
+  });
+  const closeModal2 = document.querySelector(`.closeModal2`);
+
+  closeModal2.addEventListener("click", () => {
     modal2.style.display = `none`;
     modal1.style.display = `none`;
     modalContainer.style = `display : none`;
